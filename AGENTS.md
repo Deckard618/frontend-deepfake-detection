@@ -10,8 +10,8 @@ project does and why. This file lists what you must know before touching it.
 - Deployed on **Cloudflare Pages**. Model weights are hosted on **Hugging Face**, and `public/models/<id>/config.json`
   points to them.
 - `extension/` is a Chrome and Firefox extension (WXT), built from the same `src/` code and the same models.
-- Shipped models: three image classifiers (`pe_tiny`, the default, then `resnet50-6ch` and `pe_small`). The text
-  pipeline works, but no text model is shipped.
+- Shipped models: three image classifiers (`pe_tiny`, the default, then `resnet50-6ch` and `pe_small`) and two text
+  classifiers (`ettin-68m`, the default, and `ettin-150m`), each kind in its own tab.
 - It is a **demo**: results are probabilities, never proof.
 
 ## Rules that must not break
@@ -69,15 +69,21 @@ extension/                  browser extension; imports src/ through the @site al
 
 - A model is a folder `public/models/<id>/` with a `config.json` (plus `tokenizer.json` for text), listed in
   `index.json`. Adding one needs no code, unless it needs a new preprocessing op. Full guide: README › Add a model.
-- Weights are gitignored (`*.onnx`, `*.onnx_data`, `*.bin`) and live in the Hugging Face repo
-  [Deckard618/imdet](https://huggingface.co/Deckard618/imdet). In `config.json`, `"model"` pins a commit:
-  `https://huggingface.co/Deckard618/imdet/resolve/<commit>/<id>/model.onnx`. To update a model, upload it there,
+- Weights are gitignored (`*.onnx`, `*.onnx_data`, `*.bin`) and live in two Hugging Face repos:
+  [Deckard618/imdet](https://huggingface.co/Deckard618/imdet) (images) and
+  [Deckard618/textdet](https://huggingface.co/Deckard618/textdet) (texts). In `config.json`, `"model"` pins a commit:
+  `https://huggingface.co/Deckard618/<repo>/resolve/<commit>/<id>/model.onnx`. To update a model, upload it there,
   then put the new commit in its `config.json`. A relative `"model": "model.onnx"` reads a local copy instead, for
   offline work and testing.
+- Text models also need `tokenizer.json` and `tokenizer_config.json` next to their `config.json` on the site (3.6 MB,
+  committed): the app reads them from there, not from Hugging Face. Check a new text model with
+  `scripts/run-text-model.mjs` against Python: the token ids must be identical.
+- `Detector` takes a `task`: each tab lists only the models of its task. The extension only bundles image models
+  (`wxt.config.ts` filters on `task`).
 - License: each detector keeps the license of the open model it is built on, Apache 2.0 for `pe_tiny` and
-  `pe_small` (Meta's Perception Encoder) and BSD 3-Clause for `resnet50-6ch` (torchvision's ResNet-50). Keep
-  `LICENSE-pe_*.txt` next to their configs (the legal pages link to it), and state the changes made wherever the
-  weights are published: Apache 2.0 requires it.
+  `pe_small` (Meta's Perception Encoder), BSD 3-Clause for `resnet50-6ch` (torchvision's ResNet-50) and MIT for
+  `ettin-68m` and `ettin-150m` (Johns Hopkins' Ettin encoders). Keep each `LICENSE-<id>.txt` next to its config (the
+  legal pages link to them), and state the changes made wherever the weights are published: Apache 2.0 requires it.
 - The reported metrics (README › The models) are the author's own. Don't present them as independent benchmarks.
 
 ## Deploying
@@ -106,7 +112,8 @@ extension/                  browser extension; imports src/ through the @site al
 
 ## Open items (October 2026)
 
-- [ ] Document the training datasets and their licenses, in the README and in the model card.
+- [ ] Document the image models' training datasets and their licenses, in the README and in the model card (the
+      text models' are in their model card).
 - [ ] Choose a license for the source code (there is none yet).
 - Ideas: verify a full SHA-256 from `config.json` in `modelFiles.ts` (`crypto.subtle.digest`); add a
   `Content-Security-Policy` to `public/_headers` with `connect-src 'self' https://huggingface.co https://*.hf.co`,

@@ -1,0 +1,25 @@
+{
+  "name": "Ettin 150M",
+  "description": "Larger Ettin encoder (Johns Hopkins, 149M parameters, 168 MB), same training as Ettin 68M. Held-out AUROC: 0.964 on rewritten AI texts, 0.933 on GPT-4 texts from unseen domains, 0.937 on the newest models (TextSight 2026), 0.803 on paraphrased GPT-4 texts, 0.765 on edited chatbot answers (Beemo). Calibrated: 50% flags 5% of human texts (MAGE).",
+  "task": "text",
+  "version": "d1b3156cb59f",
+  "model": "https://huggingface.co/Deckard618/textdet/resolve/8b677e1bd3bc6421ae710352cda13ca65502147b/ettin-150m/model.onnx",
+  "labels": [
+    "human",
+    "AI-generated"
+  ],
+  "output": "logits",
+  "preprocess": [
+    {
+      "op": "tokenize",
+      "max_length": 512
+    }
+  ],
+  "license": "MIT (jhu-clsp/ettin-encoder-150m)",
+  "calibration": {
+    "target_fpr": 0.05,
+    "offset": 0.17332348227500916,
+    "n_human_texts": 2000,
+    "source": "mage_test"
+  }
+}

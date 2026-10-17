@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { isDownloaded, predict } from "../lib/inference";
 import { clearModelFiles } from "../lib/modelFiles";
 import { loadRegistry } from "../lib/registry";
-import type { Model, Phase, Prediction } from "../lib/types";
+import type { Model, Phase, Prediction, Step } from "../lib/types";
 import { Card, DropZone } from "./ui";
 
 type Status =
@@ -11,26 +11,36 @@ type Status =
   | { kind: "done"; result: Prediction }
   | { kind: "error"; message: string };
 
-export function Detector({ image, onImage }: { image: File | null; onImage: (file: File) => void }) {
-  const [models, setModels] = useState<Model[]>([]);
+/** One detection tab: it lists the registry's models of its task. The input lives in App, so it survives tab changes. */
+type Props =
+  | { task: "image"; image: File | null; onImage: (file: File) => void }
+  | { task: "text"; text: string; onText: (text: string) => void };
+
+export function Detector(props: Props) {
+  const { task } = props;
+  const [models, setModels] = useState<Model[] | null>(null); // null while the registry loads
   const [configErrors, setConfigErrors] = useState<string[]>([]);
   const [modelId, setModelId] = useState("");
-  const [text, setText] = useState("");
   const [status, setStatus] = useState<Status>({ kind: "idle" });
   const [downloaded, setDownloaded] = useState(false);
 
   useEffect(() => {
     loadRegistry()
       .then(({ models, errors }) => {
-        setModels(models);
+        const ofTask = models.filter((m) => m.task === task);
+        setModels(ofTask);
         setConfigErrors(errors);
-        setModelId(models[0]?.id ?? "");
+        setModelId(ofTask[0]?.id ?? "");
       })
-      .catch((e: Error) => setConfigErrors([`Could not load models/index.json (${e.message})`]));
-  }, []);
+      .catch((e: Error) => {
+        setModels([]);
+        setConfigErrors([`Could not load models/index.json (${e.message})`]);
+      });
+  }, [task]);
 
-  const model = models.find((m) => m.id === modelId);
+  const model = models?.find((m) => m.id === modelId);
   const busy = status.kind === "busy";
+  const image = props.task === "image" ? props.image : null;
 
   useEffect(() => {
     if (model && !busy) isDownloaded(model).then(setDownloaded);
@@ -38,7 +48,7 @@ export function Detector({ image, onImage }: { image: File | null; onImage: (fil
 
   useEffect(() => setStatus({ kind: "idle" }), [image]);
 
-  const input = model?.task === "image" ? image : text.trim() ? text : null;
+  const input = props.task === "image" ? props.image : props.text.trim() ? props.text : null;
 
   async function analyze() {
     if (!model || !input) return;
@@ -74,8 +84,8 @@ export function Detector({ image, onImage }: { image: File | null; onImage: (fil
               }}
               className="rounded-md border border-border bg-bg px-3 py-2"
             >
-              {models.map((m) => (
-                <option key={m.id} value={m.id}>{m.name} · {m.task}</option>
+              {models?.map((m) => (
+                <option key={m.id} value={m.id}>{m.name}</option>
               ))}
             </select>
             {model.description && <p className="text-sm text-muted">{model.description}</p>}
@@ -93,22 +103,25 @@ export function Detector({ image, onImage }: { image: File | null; onImage: (fil
             </p>
           </section>
 
-          {model.task === "image" ? (
-            <DropZone accept="image" onFile={onImage} disabled={busy}>
-              <ImagePreview file={image} />
+          {props.task === "image" ? (
+            <DropZone accept="image" onFile={props.onImage} disabled={busy}>
+              <ImagePreview file={props.image} />
             </DropZone>
           ) : (
-            <textarea
-              value={text}
-              disabled={busy}
-              onChange={(e) => {
-                setText(e.target.value);
-                setStatus({ kind: "idle" });
-              }}
-              placeholder="Paste the text to analyze…"
-              rows={8}
-              className="w-full resize-y rounded-lg border border-border bg-bg p-3 text-sm"
-            />
+            <div className="flex flex-col gap-1.5">
+              <textarea
+                value={props.text}
+                disabled={busy}
+                onChange={(e) => {
+                  props.onText(e.target.value);
+                  setStatus({ kind: "idle" });
+                }}
+                placeholder="Paste the text to analyze…"
+                rows={10}
+                className="w-full resize-y rounded-lg border border-border bg-bg p-3 text-sm"
+              />
+              <p className="text-xs text-muted">{textHint(model)}</p>
+            </div>
           )}
 
           <button
@@ -126,10 +139,21 @@ export function Detector({ image, onImage }: { image: File | null; onImage: (fil
           </div>
         </Card>
       ) : (
-        configErrors.length === 0 && <p className="text-sm text-muted">Loading models…</p>
+        configErrors.length === 0 && (
+          <p className="text-sm text-muted">{models ? `No ${task} detection model is available yet.` : "Loading models…"}</p>
+        )
       )}
     </div>
   );
+}
+
+/** What a text model reads, from its tokenize step. An English word is about 1.3 tokens. */
+function textHint(model: Model) {
+  const step = model.preprocess.find((s): s is Extract<Step, { op: "tokenize" }> => s.op === "tokenize");
+  const reads = step?.max_length
+    ? `Reads the first ${step.max_length} tokens, about ${Math.round((step.max_length * 0.75) / 50) * 50} words. `
+    : "";
+  return `${reads}Short texts give less reliable scores.`;
 }
 
 function ImagePreview({ file }: { file: File | null }) {

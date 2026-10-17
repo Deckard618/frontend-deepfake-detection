@@ -72,8 +72,10 @@ export default function LegalNotice() {
           Les textes et l'interface du site appartiennent à l'éditeur. Les modèles PE-Core sont distribués sous licence
           Apache 2.0, celle de Perception Encoder (Meta) dont ils sont dérivés
           (<a href="/models/pe_tiny/LICENSE-pe_tiny.txt">texte de la licence</a>). Le modèle ResNet-50 6 canaux est
-          distribué sous licence BSD 3-Clause, celle de l'implémentation de ResNet-50 de torchvision. Le site utilise
-          aussi des logiciels libres, dont React, ONNX Runtime Web et OpenCV.js, chacun sous sa propre licence.
+          distribué sous licence BSD 3-Clause, celle de l'implémentation de ResNet-50 de torchvision. Les modèles de
+          détection de texte Ettin sont distribués sous licence MIT, celle des encodeurs Ettin (Johns Hopkins University)
+          dont ils sont dérivés (<a href="/models/ettin-68m/LICENSE-ettin-68m.txt">texte de la licence</a>). Le site
+          utilise aussi des logiciels libres, dont React, ONNX Runtime Web et OpenCV.js, chacun sous sa propre licence.
         </p>
       </section>
 

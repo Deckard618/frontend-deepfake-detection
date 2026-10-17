@@ -6,7 +6,8 @@ import { Choice } from "./components/ui";
 import { REPO_URL } from "./lib/links";
 
 const TABS = [
-  { value: "detect", label: "Detect" },
+  { value: "detect", label: "Image detection" },
+  { value: "text", label: "Text detection" },
   { value: "image", label: "Image forensics" },
   { value: "video", label: "Video forensics" },
 ] as const;
@@ -14,14 +15,16 @@ type Tab = (typeof TABS)[number]["value"];
 
 export default function App() {
   const [tab, setTab] = useState<Tab>(() => TABS.find((t) => `#${t.value}` === window.location.hash)?.value ?? "detect");
-  const [image, setImage] = useState<File | null>(null); // shared by Detect and Image forensics
+  const [image, setImage] = useState<File | null>(null); // shared by Image detection and Image forensics
+  const [text, setText] = useState("");
   const [video, setVideo] = useState<File | null>(null);
 
   useEffect(() => {
     window.history.replaceState(null, "", tab === "detect" ? window.location.pathname : `#${tab}`);
   }, [tab]);
 
-  // Paste anywhere: images go to Detect / Image forensics, videos to Video forensics.
+  // Paste anywhere: images go to Image detection / Image forensics, videos to Video forensics, and on the Text
+  // detection tab, text goes to the text box (a paste inside a text field is left to the field).
   useEffect(() => {
     const onPaste = (e: ClipboardEvent) => {
       const file = e.clipboardData?.files[0];
@@ -31,6 +34,10 @@ export default function App() {
       } else if (file?.type.startsWith("image/")) {
         setImage(file);
         if (tab === "video") setTab("image");
+        else if (tab === "text") setTab("detect");
+      } else if (tab === "text" && !(e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLInputElement)) {
+        const pasted = e.clipboardData?.getData("text/plain");
+        if (pasted) setText(pasted);
       }
     };
     window.addEventListener("paste", onPaste);
@@ -73,15 +80,16 @@ export default function App() {
           <p>
             <strong className="font-semibold">Everything runs on your device.</strong> The models run in your browser,
             on your phone or computer, so your images, videos and texts are never uploaded. They also have to fit in your
-            device's memory (RAM) and run on its processor: that is why they are small, tens of megabytes where
-            server-side AI models weigh gigabytes.
+            device's memory (RAM) and run on its processor: that is why they are small, megabytes where server-side AI
+            models weigh gigabytes.
           </p>
         </aside>
         <Choice options={TABS} value={tab} onChange={setTab} />
       </header>
 
       <main>
-        {tab === "detect" && <Detector image={image} onImage={setImage} />}
+        {tab === "detect" && <Detector task="image" image={image} onImage={setImage} />}
+        {tab === "text" && <Detector task="text" text={text} onText={setText} />}
         {tab === "image" && <ImageForensics image={image} onImage={setImage} />}
         {tab === "video" && <VideoForensics file={video} onFile={setVideo} />}
       </main>
