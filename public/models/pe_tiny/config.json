@@ -1,0 +1,25 @@
+{
+  "name": "PE-Core Tiny",
+  "description": "Detects AI-generated images from CLIP-style features (Perception Encoder, 6M parameters, 12.5 MB). 94.6% balanced accuracy on DeepDetect-25 faces (92.0% after compression or blur); catches about 65% of fakes from the newest generators (GPT-Image-1.5, Nano Banana Pro, Seedream 4.5, Imagen 4, FLUX.2).",
+  "task": "image",
+  "version": "87cf796d2ca7",
+  "model": "https://huggingface.co/Deckard618/imdet/resolve/17e493fd263f9195999d01dde1eee78ea8956638/pe_tiny/model.onnx",
+  "labels": [
+    "fake",
+    "real"
+  ],
+  "output": "logits",
+  "preprocess": [
+    {
+      "op": "resize",
+      "size": 256
+    },
+    {
+      "op": "center_crop",
+      "size": 256
+    },
+    {
+      "op": "to_tensor"
+    }
+  ]
+}

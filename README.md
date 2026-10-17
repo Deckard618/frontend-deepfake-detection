@@ -39,8 +39,9 @@ author's own measurements, not independent benchmarks.
   to 100%.
 - **Training data.** Not documented yet. The datasets, with their links and licenses, will be listed here and in the
   model repository.
-- **Weights.** Hosted on Hugging Face. Each `public/models/<id>/config.json` holds the exact file URL, and the model
-  card there shows how to run the models in Python.
+- **Weights.** Hosted on Hugging Face at [Deckard618/imdet](https://huggingface.co/Deckard618/imdet), whose model
+  card shows how to run them in Python. Each `public/models/<id>/config.json` holds the exact file URL, pinned to a
+  commit.
 
 ### Licenses and sources
 
@@ -50,7 +51,7 @@ The detectors are fine-tuned from open models and keep the license of the model 
 |---|---|---|---|
 | `pe_tiny` | Meta's Perception Encoder, PE-Core T16 | [Apache 2.0](public/models/pe_tiny/LICENSE-pe_tiny.txt) | [weights](https://huggingface.co/facebook/PE-Core-T16-384) · [code](https://github.com/facebookresearch/perception_models) · [paper](https://arxiv.org/abs/2504.13181) |
 | `pe_small` | Meta's Perception Encoder, PE-Core S16 | [Apache 2.0](public/models/pe_small/LICENSE-pe_small.txt) | [weights](https://huggingface.co/facebook/PE-Core-S16-384) · [code](https://github.com/facebookresearch/perception_models) · [paper](https://arxiv.org/abs/2504.13181) |
-| `resnet50-6ch` | ResNet-50, as implemented in torchvision | [BSD 3-Clause](https://github.com/pytorch/vision/blob/main/LICENSE) | [docs](https://docs.pytorch.org/vision/stable/models/generated/torchvision.models.resnet50.html) · [code](https://github.com/pytorch/vision) · [paper](https://arxiv.org/abs/1512.03385) |
+| `resnet50-6ch` | ResNet-50, as implemented in torchvision | [BSD 3-Clause](public/models/resnet50-6ch/LICENSE-resnet50-6ch.txt) | [docs](https://docs.pytorch.org/vision/stable/models/generated/torchvision.models.resnet50.html) · [code](https://github.com/pytorch/vision) · [paper](https://arxiv.org/abs/1512.03385) |
 
 Changes from the original models: trained to detect AI-generated images, with a 2-class output (`fake`, `real`), and
 exported to ONNX. `resnet50-6ch` also has its first layer widened to 6 input channels.

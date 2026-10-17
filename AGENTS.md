@@ -69,9 +69,11 @@ extension/                  browser extension; imports src/ through the @site al
 
 - A model is a folder `public/models/<id>/` with a `config.json` (plus `tokenizer.json` for text), listed in
   `index.json`. Adding one needs no code, unless it needs a new preprocessing op. Full guide: README › Add a model.
-- Weights are gitignored (`*.onnx`, `*.onnx_data`, `*.bin`). In `config.json`, `"model"` is a Hugging Face URL pinned
-  to a commit: `https://huggingface.co/<user>/<repo>/resolve/<commit>/<id>/model.onnx`. A relative
-  `"model": "model.onnx"` reads a local copy, for offline work and testing.
+- Weights are gitignored (`*.onnx`, `*.onnx_data`, `*.bin`) and live in the Hugging Face repo
+  [Deckard618/imdet](https://huggingface.co/Deckard618/imdet). In `config.json`, `"model"` pins a commit:
+  `https://huggingface.co/Deckard618/imdet/resolve/<commit>/<id>/model.onnx`. To update a model, upload it there,
+  then put the new commit in its `config.json`. A relative `"model": "model.onnx"` reads a local copy instead, for
+  offline work and testing.
 - License: each detector keeps the license of the open model it is built on, Apache 2.0 for `pe_tiny` and
   `pe_small` (Meta's Perception Encoder) and BSD 3-Clause for `resnet50-6ch` (torchvision's ResNet-50). Keep
   `LICENSE-pe_*.txt` next to their configs (the legal pages link to it), and state the changes made wherever the
@@ -104,12 +106,7 @@ extension/                  browser extension; imports src/ through the @site al
 
 ## Open items (October 2026)
 
-- [ ] Set `REPO_URL` in `src/lib/links.ts` once the GitHub repository exists: the site header and the extension
-      panel show the link only when it is set.
-- [ ] Point the three `config.json` files to the Hugging Face URLs, pinned to a commit.
 - [ ] Document the training datasets and their licenses, in the README and in the model card.
-- [ ] Delete the unused `public/*.wasm` (old ONNX Runtime copies, about 60 MB, gitignored but copied into local
-      builds).
 - [ ] Choose a license for the source code (there is none yet).
 - Ideas: verify a full SHA-256 from `config.json` in `modelFiles.ts` (`crypto.subtle.digest`); add a
   `Content-Security-Policy` to `public/_headers` with `connect-src 'self' https://huggingface.co https://*.hf.co`,

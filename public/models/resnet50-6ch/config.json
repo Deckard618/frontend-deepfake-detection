@@ -1,0 +1,13 @@
+{
+  "name": "ResNet-50 6-channel forensic",
+  "description": "RGB + saturation + SRM noise + FFT magnitude. 97.8% accuracy (AUC 0.997) on its held-out test split. 98 MB.",
+  "task": "image",
+  "version": "1",
+  "model": "https://huggingface.co/Deckard618/imdet/resolve/17e493fd263f9195999d01dde1eee78ea8956638/resnet50-6ch/model.onnx",
+  "labels": ["fake", "real"],
+  "output": "logits",
+  "preprocess": [
+    { "op": "resize", "size": [224, 224], "filter": "bicubic" },
+    { "op": "forensic6" }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "name": "PE-Core Small",
+  "description": "Larger, best on the newest generators (about 70% of their fakes caught). Perception Encoder Small, 24M parameters, ~47 MB. 93.6% balanced accuracy on DeepDetect-25 faces.",
+  "task": "image",
+  "version": "7c65b8ec8218",
+  "model": "https://huggingface.co/Deckard618/imdet/resolve/17e493fd263f9195999d01dde1eee78ea8956638/pe_small/model.onnx",
+  "labels": [
+    "fake",
+    "real"
+  ],
+  "output": "logits",
+  "preprocess": [
+    {
+      "op": "resize",
+      "size": 256
+    },
+    {
+      "op": "center_crop",
+      "size": 256
+    },
+    {
+      "op": "to_tensor"
+    }
+  ]
+}
