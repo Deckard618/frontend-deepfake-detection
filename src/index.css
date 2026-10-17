@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Colors are HSL triplets, used through tailwind.config.ts (bg-card, text-muted, …). */
+:root {
+  color-scheme: light dark;
+  --bg: 220 20% 97%;
+  --fg: 222 25% 12%;
+  --card: 0 0% 100%;
+  --muted: 220 10% 42%;
+  --border: 220 14% 87%;
+  --accent: 212 80% 45%;
+  --fake: 0 70% 48%;
+  --real: 145 63% 32%;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: 220 15% 10%;
+    --fg: 0 0% 94%;
+    --card: 220 15% 14%;
+    --muted: 220 8% 64%;
+    --border: 220 12% 24%;
+    --accent: 212 80% 58%;
+    --fake: 0 75% 64%;
+    --real: 145 55% 50%;
+  }
+}
+
+body {
+  @apply bg-bg text-fg antialiased;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}

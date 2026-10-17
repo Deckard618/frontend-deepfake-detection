@@ -1,0 +1,29 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+.env
+.env.*
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.sw?
+
+# Model weights are too big for git: keep them local or host them elsewhere and put the
+# URL in config.json ("model": "https://..."). config.json and tokenizer files are committed.
+public/models/**/*.onnx
+public/models/**/*.onnx_data
+public/models/**/*.bin
+
+# Old ONNX Runtime copies: the app now bundles the .wasm it needs itself.
+public/*.wasm

@@ -1,0 +1,22 @@
+{
+  "name": "deepfake-detection-extension",
+  "description": "Browser extension (Chrome, Brave, Edge, Firefox) for the AI Detection & Forensics Lab",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wxt",
+    "dev:firefox": "wxt -b firefox",
+    "build": "wxt build",
+    "build:firefox": "wxt build -b firefox",
+    "zip": "wxt zip",
+    "zip:firefox": "wxt zip -b firefox",
+    "typecheck": "tsc --noEmit",
+    "postinstall": "wxt prepare"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react-swc": "^4.3.3",
+    "vite": "^7.1.0",
+    "wxt": "~0.20.27"
+  }
+}

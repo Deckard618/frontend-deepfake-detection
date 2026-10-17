@@ -1,0 +1,5 @@
+# WXT output and generated types
+dist
+.wxt
+# Local dev-browser settings (e.g. the path to Brave)
+web-ext.config.ts

@@ -1,0 +1,11 @@
+# Response headers for Cloudflare Pages (nginx.conf sets the same ones for the Docker deploy).
+# COOP + COEP make the page cross-origin isolated: ONNX Runtime can then use several threads.
+/*
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: require-corp
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+
+# Vite's fingerprinted JS/CSS/WASM never change.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
