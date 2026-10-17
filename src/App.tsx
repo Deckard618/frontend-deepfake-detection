@@ -43,9 +43,7 @@ export default function App() {
         <div className="flex items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl font-semibold tracking-tight">AI Detection &amp; Forensics Lab</h1>
-            <p className="mt-1 text-sm text-muted">
-              Detect AI-generated content and inspect images and videos, entirely in your browser. Nothing is uploaded.
-            </p>
+            <p className="mt-1 text-sm text-muted">Detect AI-generated content and inspect images and videos.</p>
           </div>
           {REPO_URL && (
             <a
@@ -58,6 +56,27 @@ export default function App() {
             </a>
           )}
         </div>
+        <aside className="flex gap-2.5 rounded-lg border border-accent/30 bg-accent/5 px-3 py-2.5 text-sm">
+          <svg
+            aria-hidden
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="mt-0.5 h-4 w-4 shrink-0 text-accent"
+          >
+            <rect x="5" y="11" width="14" height="10" rx="2" />
+            <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+          </svg>
+          <p>
+            <strong className="font-semibold">Everything runs on your device.</strong> The models run in your browser,
+            on your phone or computer, so your images, videos and texts are never uploaded. They also have to fit in your
+            device's memory (RAM) and run on its processor: that is why they are small, tens of megabytes where
+            server-side AI models weigh gigabytes.
+          </p>
+        </aside>
         <Choice options={TABS} value={tab} onChange={setTab} />
       </header>
 
