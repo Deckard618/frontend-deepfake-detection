@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Detector } from "./components/Detector";
+import { HowItWorks } from "./components/HowItWorks";
 import { ImageForensics } from "./components/ImageForensics";
 import { VideoForensics } from "./components/VideoForensics";
 import { Choice } from "./components/ui";
@@ -77,12 +78,15 @@ export default function App() {
             <rect x="5" y="11" width="14" height="10" rx="2" />
             <path d="M8 11V7a4 4 0 0 1 8 0v4" />
           </svg>
-          <p>
-            <strong className="font-semibold">Everything runs on your device.</strong> The models run in your browser,
-            on your phone or computer, so your images, videos and texts are never uploaded. They also have to fit in your
-            device's memory (RAM) and run on its processor: that is why they are small, megabytes where server-side AI
-            models weigh gigabytes.
-          </p>
+          <div className="min-w-0 flex-1">
+            <p>
+              <strong className="font-semibold">Everything runs on your device.</strong> The models run in your browser,
+              on your phone or computer, so your images, videos and texts are never uploaded. They also have to fit in
+              your device's memory (RAM) and run on its processor: that is why they are small, megabytes where
+              server-side AI models weigh gigabytes.
+            </p>
+            <HowItWorks />
+          </div>
         </aside>
         <Choice options={TABS} value={tab} onChange={setTab} />
       </header>
