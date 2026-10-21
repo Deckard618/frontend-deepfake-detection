@@ -71,38 +71,7 @@ export function Detector(props: Props) {
       )}
 
       {model ? (
-        <Card className="flex flex-col gap-5">
-          <section className="flex flex-col gap-1.5">
-            <label htmlFor="model" className="text-xs font-medium uppercase tracking-wide text-muted">Model</label>
-            <select
-              id="model"
-              value={modelId}
-              disabled={busy}
-              onChange={(e) => {
-                setModelId(e.target.value);
-                setStatus({ kind: "idle" });
-              }}
-              className="rounded-md border border-border bg-bg px-3 py-2"
-            >
-              {models?.map((m) => (
-                <option key={m.id} value={m.id}>{m.name}</option>
-              ))}
-            </select>
-            {model.description && <p className="text-sm text-muted">{model.description}</p>}
-            <p className="text-xs text-muted">
-              {downloaded ? (
-                <>
-                  ✓ Downloaded, runs offline ·{" "}
-                  <button className="underline hover:text-fg" disabled={busy} onClick={() => clearModelFiles().then(() => setDownloaded(false))}>
-                    delete downloaded models
-                  </button>
-                </>
-              ) : (
-                "Downloaded on first use, then kept by the browser"
-              )}
-            </p>
-          </section>
-
+        <Card className="flex flex-col gap-4">
           {props.task === "image" ? (
             <DropZone accept="image" onFile={props.onImage} disabled={busy}>
               <ImagePreview file={props.image} />
@@ -123,6 +92,45 @@ export function Detector(props: Props) {
               <p className="text-xs text-muted">{textHint(model)}</p>
             </div>
           )}
+
+          {/* What to analyze comes first. The model, its details and its cache come after, one line unless opened. */}
+          <section className="flex flex-col gap-1.5">
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
+              <label htmlFor="model" className="font-medium">Model</label>
+              <select
+                id="model"
+                value={modelId}
+                disabled={busy}
+                onChange={(e) => {
+                  setModelId(e.target.value);
+                  setStatus({ kind: "idle" });
+                }}
+                className="max-w-full rounded-md border border-border bg-bg px-2 py-1"
+              >
+                {models?.map((m) => (
+                  <option key={m.id} value={m.id}>{m.name}</option>
+                ))}
+              </select>
+            </div>
+            <p className="text-xs text-muted">
+              {downloaded ? (
+                <>
+                  ✓ Downloaded, runs offline ·{" "}
+                  <button className="underline hover:text-fg" disabled={busy} onClick={() => clearModelFiles().then(() => setDownloaded(false))}>
+                    delete downloaded models
+                  </button>
+                </>
+              ) : (
+                "Downloaded on first use, then kept by the browser"
+              )}
+            </p>
+            {model.description && (
+              <details className="text-xs text-muted">
+                <summary className="w-fit cursor-pointer hover:text-fg">About this model</summary>
+                <p className="mt-1.5 text-sm">{model.description}</p>
+              </details>
+            )}
+          </section>
 
           <button
             onClick={analyze}

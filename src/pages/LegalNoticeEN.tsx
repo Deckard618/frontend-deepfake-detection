@@ -1,4 +1,5 @@
 import { LegalPage } from "../components/LegalPage";
+import { KOFI_URL } from "../lib/links";
 
 export default function LegalNoticeEN() {
   return (
@@ -25,6 +26,12 @@ export default function LegalNoticeEN() {
           This site is an experimental, educational demo, provided free of charge and "as is". It may be changed,
           interrupted or shut down at any time without notice.
         </p>
+        {KOFI_URL && (
+          <p>
+            It is free for everyone. Donations on <a href={KOFI_URL}>Ko-fi</a> are optional and unlock nothing; Ko-fi
+            handles them under its own terms.
+          </p>
+        )}
         <p>
           Results are <strong>probabilities</strong> computed by machine-learning models, not findings. They can be wrong
           both ways (authentic content flagged as generated, generated content missed), especially on compressed or edited
@@ -53,7 +60,8 @@ export default function LegalNoticeEN() {
           <li>No account, no cookies, no analytics, no advertising. The publisher collects no personal data.</li>
           <li>
             Your browser keeps downloaded models in its cache so it does not download them again. This storage is strictly
-            necessary for the service; you can clear it from the Detect tab or your browser settings.
+            necessary for the service; you can clear it with "delete downloaded models", under the model on the Check an image
+            and Check a text tabs, or in your browser settings.
           </li>
           <li>
             As with any website, the host and Hugging Face receive the technical connection data (IP address, browser)
