@@ -27,3 +27,6 @@ public/models/**/*.bin
 
 # Old ONNX Runtime copies: the app now bundles the .wasm it needs itself.
 public/*.wasm
+
+# Raw renders of the "How it works" animation (scripts/how-it-works/render.sh)
+scripts/how-it-works/out/

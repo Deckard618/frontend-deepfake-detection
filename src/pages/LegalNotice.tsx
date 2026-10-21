@@ -2,13 +2,11 @@ import { LegalPage } from "../components/LegalPage";
 
 export default function LegalNotice() {
   return (
-    <LegalPage title="Mentions légales" updated={<>Dernière mise à jour : 17 octobre 2026 · <a href="/legal-en">English version</a></>}>
+    <LegalPage title="Mentions légales" updated={<>Dernière mise à jour : 21 octobre 2026 · <a href="/legal-en">English version</a></>}>
       <section>
         <h2>Éditeur</h2>
         <p>
           Le site AI Detection &amp; Forensics Lab est édité à titre non professionnel par une personne physique.
-          Conformément à la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique (LCEN), l'éditeur
-          a choisi de ne pas rendre publiques ses coordonnées, qui ont été communiquées à l'hébergeur.
         </p>
       </section>
 

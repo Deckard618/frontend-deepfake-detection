@@ -2,13 +2,11 @@ import { LegalPage } from "../components/LegalPage";
 
 export default function LegalNoticeEN() {
   return (
-    <LegalPage title="Legal notice" updated={<>Last updated: October 17, 2026 · <a href="/legal">Version française</a></>}>
+    <LegalPage title="Legal notice" updated={<>Last updated: October 21, 2026 · <a href="/legal">Version française</a></>}>
       <section>
         <h2>Publisher</h2>
         <p>
-          AI Detection &amp; Forensics Lab is published on a non-professional basis by a private individual. As allowed by
-          French law No. 2004-575 of June 21, 2004 on confidence in the digital economy (LCEN), the publisher has chosen
-          not to make their contact details public; they have been provided to the host.
+          AI Detection &amp; Forensics Lab is published on a non-professional basis by a private individual.
         </p>
       </section>
 

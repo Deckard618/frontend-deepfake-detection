@@ -78,15 +78,12 @@ export default function App() {
             <rect x="5" y="11" width="14" height="10" rx="2" />
             <path d="M8 11V7a4 4 0 0 1 8 0v4" />
           </svg>
-          <div className="min-w-0 flex-1">
-            <p>
-              <strong className="font-semibold">Everything runs on your device.</strong> The models run in your browser,
-              on your phone or computer, so your images, videos and texts are never uploaded. They also have to fit in
-              your device's memory (RAM) and run on its processor: that is why they are small, megabytes where
-              server-side AI models weigh gigabytes.
-            </p>
-            <HowItWorks />
-          </div>
+          <p>
+            <strong className="font-semibold">Everything runs on your device.</strong> The models run in your browser,
+            on your phone or computer, so your images, videos and texts are never uploaded. They also have to fit in your
+            device's memory (RAM) and run on its processor: that is why they are small, megabytes where server-side AI
+            models weigh gigabytes.
+          </p>
         </aside>
         <Choice options={TABS} value={tab} onChange={setTab} />
       </header>
@@ -97,6 +94,8 @@ export default function App() {
         {tab === "image" && <ImageForensics image={image} onImage={setImage} />}
         {tab === "video" && <VideoForensics file={video} onFile={setVideo} />}
       </main>
+
+      <HowItWorks />
 
       <footer className="mt-auto flex flex-col gap-2 text-xs text-muted">
         <p>

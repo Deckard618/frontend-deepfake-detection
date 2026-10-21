@@ -34,8 +34,8 @@ Five classifiers, each answering a single question. Three image models: was this
 | **PE-Core Small** (`pe_small`) | Meta's Perception Encoder [PE-Core S16](https://huggingface.co/facebook/PE-Core-S16-384), fine-tuned | 24M parameters, 47 MB | RGB, 256×256 | 93.6% balanced accuracy on DeepDetect-25 faces. Catches about 70% of the fakes from the newest generators. |
 | **ResNet-50 6-channel** (`resnet50-6ch`) | ResNet-50 (torchvision architecture), first layer widened to 6 input channels | 25M parameters, 98 MB | RGB, saturation, SRM noise residual and FFT magnitude, 224×224 | 97.8% accuracy (AUC 0.997) on a held-out split of its own training data. Expect much lower accuracy on images from other sources. |
 
-"The newest generators" are GPT-Image-1.5, Nano Banana Pro, Seedream 4.5, Imagen 4 and FLUX.2. All the results are the
-author's own measurements, not independent benchmarks.
+"The newest generators" are GPT-Image-1.5, Nano Banana Pro, Seedream 4.5, Imagen 4 and FLUX.2. All the results are my
+own measurements, not independent benchmarks.
 
 - **Which one to pick.** `pe_tiny` is the default: the smallest, the fastest, and the most robust to compression.
   `pe_small` catches a few more images from recent generators. `resnet50-6ch` has only been measured on images like
@@ -55,7 +55,7 @@ author's own measurements, not independent benchmarks.
 | **Ettin 68M** (`ettin-68m`), the default | [Ettin encoder 68M](https://huggingface.co/jhu-clsp/ettin-encoder-68m) (Johns Hopkins), fine-tuned | 68M parameters, 77 MB | English text, first 512 tokens | 0.980 on rewritten AI texts, 0.946 on GPT-4 texts from unseen domains, 0.898 on the newest models (TextSight 2026), 0.822 on paraphrased GPT-4 texts, 0.752 on edited chatbot answers (Beemo). |
 | **Ettin 150M** (`ettin-150m`) | [Ettin encoder 150M](https://huggingface.co/jhu-clsp/ettin-encoder-150m) (Johns Hopkins), fine-tuned | 149M parameters, 168 MB | English text, first 512 tokens | 0.964, 0.933, 0.937, 0.803 and 0.765 on the same sets. |
 
-AUROC is 1 for a perfect detector and 0.5 for chance. These results are also the author's own measurements.
+AUROC is 1 for a perfect detector and 0.5 for chance. These results are also my own measurements.
 
 - **Which one to pick.** `ettin-68m` is the default: half the size, and it catches more AI text when only a few human
   texts may be flagged. `ettin-150m` is a little better on the newest models.
@@ -415,6 +415,7 @@ src/lib/links.ts               REPO_URL, the GitHub link in the header and the e
 public/models/                 index.json and one folder per model
 public/_headers                response headers for Cloudflare Pages
 scripts/run-text-model.mjs     runs a text model with the app's runtime, without a browser
+scripts/how-it-works/          the "How it works" animation (ManimGL); render.sh writes public/how-it-works/
 extension/                     the browser extension, built from src/
 ```
 
